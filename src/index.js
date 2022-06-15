@@ -14,6 +14,7 @@ const incTempAction = () => {
   const tempDigit = document.getElementById('tempValue');
   tempDigit.textContent = state.tempValue;
   tempValueColorAction();
+  landscapeChangeAction();
 };
 
 // event listner
@@ -26,6 +27,7 @@ const decTempAction = () => {
   const tempDigit = document.getElementById('tempValue');
   tempDigit.textContent = state.tempValue;
   tempValueColorAction();
+  landscapeChangeAction();
 };
 
 // event listner
@@ -33,9 +35,10 @@ const downTempElement = document.getElementById('downTemp');
 downTempElement.addEventListener('click', decTempAction);
 
 const tempValueColorAction = () => {
-  state.color = 'orange';
-  tempColorElement = document.getElementById('tempColor');
-  tempColorElement.className = color;
+  console.log('tempValueColor being called');
+  // state.color = 'orange';
+  const tempColorElement = document.getElementById('tempValue');
+  // tempColorElement.className = color;
   if (state.tempValue <= 49) {
     tempColorElement.style.color = 'teal';
   } else if (50 < state.tempValue && state.tempValue < 59) {
@@ -46,7 +49,7 @@ const tempValueColorAction = () => {
     tempColorElement.style.color = 'orange';
   } else {
     // tempColorElement.className = "red";
-    color = 'red';
+    tempColorElement.style.color = 'red';
   }
 };
 
@@ -66,6 +69,12 @@ const landscapeChangeAction = () => {
   }
 };
 
+const outputCityName = () => {
+  const outputCityElement = document.getElementById('outputCity');
+  const inputCityElement = document.getElementById('inputCity');
+  state.city = inputCityElement;
+};
+
 // const arrowEx = () => {
 //   // state.arrow += "⬆"
 //   const upTempElement = document.getElementById('upTemp');
@@ -74,9 +83,7 @@ const landscapeChangeAction = () => {
 
 // upTempElement.addEventListener('click', arrowEx);
 
-
 // const increaseTemp = () => {
 //   state.temp += 1;
 //   formatTempAndGarden();
 // };
-
