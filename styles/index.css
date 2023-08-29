@@ -1,9 +1,24 @@
 html {
     font-family: Palatino, Verdana;
-    background-image: url('../assets/summer.jpg');
     /* background-position: center; */
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+.bgImageDesert {
+    background-image: url('../assets/desert.jpg');
+}
+
+.bgImageSummer {
+    background-image: url('../assets/summer.jpg');
+}
+
+.bgImageAutumn {
+    background-image: url('../assets/Autumn.jpg');
+}
+
+.bgImageWinter {
+    background-image: url('../assets/winter.jpg');
 }
 
 header {

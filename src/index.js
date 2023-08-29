@@ -1,4 +1,8 @@
-'use strict';
+// 'use strict';
+
+// import 'regenerator-runtime/runtime';
+// import axios from 'axios';
+// const axios = required('axios');
 
 const state = {
   tempValue: 75,
@@ -13,10 +17,11 @@ const state = {
 
 // API calls
 const getLatLon = () => {
-  const inputCityElement = document.getElementById('inputCity').value;
+  // const inputCityElement = document.getElementById('inputCity').value;?
   axios
     .get('http://127.0.0.1:5000/location', { params: { q: state.city } })
     .then((response) => {
+      console.log('in lat lon');
       state.lat = response.data[0].lat;
       state.lon = response.data[0].lon;
       console.log(state.lat);
@@ -41,23 +46,28 @@ const getRealTemp = () => {
     .then((response) => {
       console.log(response);
       // const tempValueK = response.data.current.temp;
-      const tempValueK = response.data.current.temp;
+      const tempValueK = response.data.main.temp;
       const tempValueF = ((tempValueK - 273.15) * 9) / 5 + 32;
       const tempF = Math.floor(tempValueF);
       state.tempF = tempF;
-      displayRealTemp(tempF);
-      landscapeChangeAction();
-      tempValueColorAction();
+      // displayRealTemp(tempF);bc updating state already
+      displayRealTemp();
+      // landscapeChangeAction();
+      // tempValueColorAction();
     })
     .catch((error) => {
       console.log('Error!', error);
     });
 };
 
-const displayRealTemp = (tempF) => {
+const displayRealTemp = () => {
+  console.log('in display real temp');
   const tempValueElement = document.getElementById('tempValue');
   // tempValueElement.textContent = state.tempF;
-  tempValueElement.textContent = tempF;
+  tempValueElement.textContent = state.tempF;
+  state.tempValue = state.tempF;
+  tempValueColorAction();
+  landscapeChangeAction();
 };
 
 // Function to increase temp Value by clicking up arrow
@@ -80,12 +90,8 @@ const decTempAction = () => {
 
 // Function to change color of temp value according to temp range
 const tempValueColorAction = () => {
-  console.log('tempValueColor being called');
-  // document.getElementById('tempValue').style.color = 'orange';
-  // state.color = 'orange';
   const tempColorElement = document.getElementById('tempValue');
-  // tempColorElement.style.color = 'orange';
-  // tempColorElement.className = color;
+
   if (state.tempValue <= 49) {
     tempColorElement.style.color = 'teal';
   } else if (50 <= state.tempValue && state.tempValue <= 59) {
@@ -103,28 +109,20 @@ const tempValueColorAction = () => {
 const landscapeChangeAction = () => {
   const landscapeElement = document.getElementById('landscape');
   landscapeElement.textContent = state.landscape;
+  const bgImageElement = document.getElementById('bgImage');
 
   if (state.tempValue <= 59) {
     landscapeElement.textContent = '🌲🌲⛄️🌲⛄️🍂🌲🍁🌲🌲⛄️🍂🌲';
-    state.background = "url('../assets/winter.jpg')";
-    document.querySelector('html').style.backgroundImage =
-      "url('../assets/winter.jpg')";
+    bgImageElement.className = 'bgImageWinter';
   } else if (60 <= state.tempValue && state.tempValue <= 69) {
     landscapeElement.textContent = '🌾🌾_🍃_🪨__🛤_🌾🌾🌾_🍃';
-    state.background = "url('../assets/autumn.jpg')";
-    document.querySelector('html').style.backgroundImage =
-      "url('../assets/autumn.jpg')";
+    bgImageElement.className = `bgImageAutumn`;
   } else if (70 <= state.tempValue && state.tempValue <= 79) {
     landscapeElement.textContent = '🌸🌿🌼__🌷🌻🌿_☘️🌱_🌻🌷';
-    state.background = "url('../assets/summer.jpg')";
-    document.querySelector('html').style.backgroundImage =
-      "url('../assets/summer.jpg')";
+    bgImageElement.className = 'bgImageSummer';
   } else if (80 <= state.tempValue) {
     landscapeElement.textContent = '🌵__🐍_🦂_🌵🌵__🐍_🏜_🦂';
-    // state.background = url('../assets/desert.jpg');
-    document.querySelector('html').style.backgroundImage =
-      "url('../assets/desert.jpg')";
-    // document.html.style.backgroundImage = "url('../assets/desert.jpg')";
+    bgImageElement.className = 'bgImageDesert';
   }
 };
 
@@ -144,8 +142,6 @@ const updateSkyAction = () => {
     state.skyscape = '🌨❄️🌨🌨❄️❄️🌨❄️❄️🌨❄️❄️🌨🌨❄️🌨';
     skyscapeElement.textContent = state.skyscape;
   }
-  // skyscapeElement.textContent = state.skyscape;
-  // skyscapeElement === state.skyscape.textContent;
 };
 
 // result.textContent = `${updateSkyAction.target.value}`;
@@ -195,16 +191,17 @@ const registerEventHandler = () => {
 
   // event listener for inputting city so can display city
   const inputCityElement = document.querySelector('input');
-  const outputCityElement = document.getElementById('outputCity');
+  // const outputCityElement = document.getElementById('outputCity');?
   inputCityElement.addEventListener('input', updateOutputCity);
-  inputCityElement.addEventListener('change', getLatLon);
+  // inputCityElement.addEventListener('change', getLatLon);bc will do every letter
 
   // event listener for clicking city reset button
   const cityResetElement = document.getElementById('cityReset');
   cityResetElement.addEventListener('click', resetCityAction);
 
   const realTimeTempElement = document.getElementById('realTimeTemp');
-  realTimeTempElement.addEventListener('click', getRealTemp);
+  // realTimeTempElement.addEventListener('click', getRealTemp);?
+  realTimeTempElement.addEventListener('click', getLatLon);
 };
 
 document.addEventListener('DOMContentLoaded', registerEventHandler);
