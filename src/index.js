@@ -19,7 +19,9 @@ const state = {
 const getLatLon = () => {
   // const inputCityElement = document.getElementById('inputCity').value;?
   axios
-    .get('http://127.0.0.1:5000/location', { params: { q: state.city } })
+    .get('https://hhameed-weather-report-proxy.onrender.com/location', {
+      params: { q: state.city },
+    })
     .then((response) => {
       console.log('in lat lon');
       state.lat = response.data[0].lat;
@@ -37,7 +39,7 @@ const getRealTemp = () => {
   console.log(state.lat);
   console.log(state.lon);
   axios
-    .get('http://127.0.0.1:5000/weather', {
+    .get('https://hhameed-weather-report-proxy.onrender.com/weather', {
       params: {
         lat: state.lat,
         lon: state.lon,
